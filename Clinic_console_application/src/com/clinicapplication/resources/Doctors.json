@@ -1,0 +1,16 @@
+[
+	{
+		"name": "Ram",
+		"id": 101,
+		"specialization": "ENT",
+		"availability": "AM",
+		"countOfPatients": 0
+	},
+	{
+		"name": "Prem",
+		"id": 102,
+		"specialization": "ENT",
+		"availability": "BOTH",
+		"countOfPatients": 0
+	}
+]
