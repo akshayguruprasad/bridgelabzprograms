@@ -1,0 +1,15 @@
+package com.transaction.connection;
+
+import java.sql.Connection;
+
+public abstract class BaseConnection {
+
+	Connection connection;
+
+	public BaseConnection(Connection connection) {
+			this.connection = connection;
+	}
+	
+	
+	
+}

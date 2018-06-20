@@ -1,0 +1,10 @@
+package com.transaction.connection;
+
+public class Connection  extends BaseConnection{
+
+	public Connection(java.sql.Connection connection) {
+		super(connection);
+		
+	}
+	
+}

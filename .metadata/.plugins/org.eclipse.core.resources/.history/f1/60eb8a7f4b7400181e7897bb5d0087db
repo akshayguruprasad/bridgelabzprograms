@@ -1,0 +1,49 @@
+package com.statement.serviceImpl;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.List;
+
+import com.statement.entity.Item;
+import com.statement.service.Inventory;
+
+public class InventoryManage implements Inventory {
+
+	@Override
+	public int add(Item item) {
+		Statement statement = null;
+
+		Connection connection = null;
+		try {
+
+			String subQuery = "('" + item.getName() + "','" + item.getPrice() + "','" + item.getExpDate() + "')";
+			statement = connection.createStatement();
+			return statement.executeUpdate("insert into bigbazar.inventory(name,price,expire_date) values" + subQuery,
+					Statement.RETURN_GENERATED_KEYS);
+		} catch (Exception e) {
+			System.out.println("Exception " + e.getMessage());
+
+		}
+
+		return 0;
+	}
+
+	@Override
+	public boolean remove(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Item> searchItem(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(Item item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

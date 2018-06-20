@@ -1,0 +1,20 @@
+package com.transaction.connection;
+
+import java.sql.DriverManager;
+
+import com.transaction.commons.Credentials;
+
+public class Connection  extends BaseConnection{
+
+	public Connection() {
+		
+		Class.forName(Credentials.CLASS);
+		
+		DriverManager.getConnection(url)
+		
+//java.sql.Connection connection=
+		super(connection);
+		
+	}
+	
+}

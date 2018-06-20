@@ -1,0 +1,7 @@
+package com.statement.serviceImpl;
+
+import com.statement.service.CheckList;
+
+public class CheckListImpl implements CheckList {
+
+}

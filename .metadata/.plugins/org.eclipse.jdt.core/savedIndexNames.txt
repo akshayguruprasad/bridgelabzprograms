@@ -1,0 +1,2 @@
+INDEX VERSION 1.130+/home/bridgeit/Workspace/.metadata/.plugins/org.eclipse.jdt.core
+2388441356.index

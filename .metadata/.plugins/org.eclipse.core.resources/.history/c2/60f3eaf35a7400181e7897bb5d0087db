@@ -1,0 +1,20 @@
+package com.statement.service;
+
+import com.statement.entity.Item;
+
+public interface CheckList {
+	public int add(Item item,int quantity);
+
+	boolean remove(int id);
+
+	Item searchItem(String name);
+
+	boolean update(Item item);
+	
+	Item searchItem(int id);
+	
+
+	
+	
+	
+}

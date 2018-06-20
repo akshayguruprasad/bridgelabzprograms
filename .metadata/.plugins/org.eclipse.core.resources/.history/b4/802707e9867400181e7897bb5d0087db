@@ -1,0 +1,16 @@
+package com.transaction.connection;
+
+public class Connection  extends BaseConnection{
+
+	public Connection() {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		
+		
+java.sql.Connection connection=
+		super(connection);
+		
+	}
+	
+}

@@ -1,0 +1,44 @@
+package com.statement.serviceImpl;
+
+import com.statement.entity.CheckListItem;
+import com.statement.entity.Item;
+import com.statement.service.CheckList;
+
+public class CheckListImpl implements CheckList {
+
+
+
+	@Override
+	public int add(CheckListItem item) {
+		
+
+		
+		return 0;
+	}
+
+	@Override
+	public boolean remove(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public CheckListItem searchItem(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CheckListItem searchItem(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(CheckListItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

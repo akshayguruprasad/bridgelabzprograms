@@ -1,0 +1,46 @@
+package com.transaction.util;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Utility {
+
+	
+	/**
+	 * USED TO FREE ALL THE RESOURCE ASSOCIATED WITH JDBC
+	 * @param connection
+	 * @param statement
+	 * @param resultSet
+	 */
+	public final  static void freeResources(Connection connection ,Statement... statement,ResultSet... resultSet) {
+		
+		for (ResultSet resultSetEach : resultSet) {
+			if(resultSetEach!=null) {//INSTANCE FOUND
+				try {
+					resultSetEach.close();
+				} catch (SQLException e) {
+					System.err.println("Exception occured [Utility][freeResources] : " + e.getMessage());
+				}
+			}
+		}
+		
+		for (ResultSet resultSetEach : resultSet) {
+			if(resultSetEach!=null) {//INSTANCE FOUND
+				try {
+					resultSetEach.close();
+				} catch (SQLException e) {
+					System.err.println("Exception occured [Utility][freeResources] : " + e.getMessage());
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,67 @@
+package com.transaction.entity;
+
+import java.util.List;
+
+import com.transaction.commons.Observable;
+import com.transaction.commons.Observer;
+
+public class Sender implements Observable {
+	private List<Observer> allObservers;
+	private String companyName;
+	private String address;
+
+	public List<Observer> getAllObservers() {
+		return allObservers;
+	}
+
+	public void setAllObservers(List<Observer> allObservers) {
+		this.allObservers = allObservers;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
+	public void registerObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deRegisterObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void notifyAllObservers() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void notifyObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void printStatement(Transaction transaction) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

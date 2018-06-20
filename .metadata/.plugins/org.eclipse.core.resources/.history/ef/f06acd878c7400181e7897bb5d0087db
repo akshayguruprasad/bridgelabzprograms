@@ -1,0 +1,9 @@
+package com.transaction.commons.entity;
+
+import com.transaction.entity.Transaction;
+
+public interface Observer {
+	Transaction getNotify();
+
+	void addObservable(Observable subject);
+}

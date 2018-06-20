@@ -1,0 +1,38 @@
+package com.statement.serviceImpl;
+
+import java.util.List;
+
+import com.statement.entity.Item;
+import com.statement.service.Inventory;
+
+public class InventoryManage  implements Inventory{
+
+	@Override
+	public int add(Item item) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean remove(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Item> searchItem(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(Item item, int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
+	
+	
+}

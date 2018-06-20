@@ -1,0 +1,5 @@
+package com.transaction.commons;
+
+public interface Observable {
+
+}

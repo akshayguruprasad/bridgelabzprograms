@@ -1,0 +1,8 @@
+1529499628474	Rename type 'Transfer'
+1529499642022	Rename type 'TransferImpl'
+1529499654034	Rename type 'TransferDAOImpl'
+1529499661858	Rename type 'TransferDAO'
+1529500724860	Rename package 'com.transaction.commonsImpl'
+1529500729762	Delete element
+1529500739414	Rename package 'com.transaction.commons'
+1529500755749	Rename package 'com.transaction.commons.entity'

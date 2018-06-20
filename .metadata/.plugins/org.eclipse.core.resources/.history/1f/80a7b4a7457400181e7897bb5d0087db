@@ -1,0 +1,20 @@
+package com.statement.util;
+
+import java.sql.Connection;
+
+public class Utility {
+
+
+public static Connection getConnection() {
+	Connection connection=null;
+	
+	Class.forName("com.mysql.jdbc.Driver")
+	
+	
+	
+	
+}
+
+
+
+}

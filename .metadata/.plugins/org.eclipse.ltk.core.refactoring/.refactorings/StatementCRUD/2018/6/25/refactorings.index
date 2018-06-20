@@ -1,0 +1,16 @@
+1529478838934	Extract method 'itemOperations'
+1529479382776	Extract method 'checkListOperations'
+1529484242462	Rename method 'itemOperations'
+1529484429774	Rename method 'checkListOperations'
+1529484965188	Rename local variable 'inventorymanager'
+1529488852411	Rename local variable 'isRemoved'
+1529490759555	Extract method 'checkListItemAdd'
+1529490796563	Extract method 'checkListUpdate'
+1529490844562	Extract method 'checkListItemRemove'
+1529490876416	Rename method 'update'
+1529490888757	Rename method 'display'
+1529491221975	Extract method 'searchCheckList'
+1529492654808	Extract method 'readFileContents'
+1529495102484	Delete element
+1529495112306	Delete element
+1529495117461	Delete element

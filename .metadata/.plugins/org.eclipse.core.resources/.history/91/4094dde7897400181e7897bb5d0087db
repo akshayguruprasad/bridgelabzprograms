@@ -1,0 +1,7 @@
+package com.transaction.serviceImpl;
+
+import com.transaction.service.Transfer;
+
+public class TransferImpl implements Transfer{
+
+}

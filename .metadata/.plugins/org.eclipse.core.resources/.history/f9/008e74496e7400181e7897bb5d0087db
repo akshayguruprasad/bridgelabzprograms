@@ -1,0 +1,56 @@
+package com.statement.serviceImpl;
+
+import java.sql.Connection;
+
+import com.statement.entity.CheckListItem;
+import com.statement.service.CheckList;
+import com.statement.util.Utility;
+
+public class CheckListImpl implements CheckList {
+
+final String INSERT="insert into requirement(name,quanitiy) values(?,?)";
+
+	@Override
+	public int add(CheckListItem item) {
+Connection connection=null;		
+try {
+	connection=ConncetionSupplier.getConnection();
+
+	connection.prepareStatement(INSERT);
+	
+}
+catch(Exception e) {
+	
+	System.err.println("Exception : "+e.getMessage());
+	
+}
+		
+		return 0;
+	}
+
+	@Override
+	public boolean remove(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public CheckListItem searchItem(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CheckListItem searchItem(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean update(CheckListItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

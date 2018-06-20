@@ -1,0 +1,91 @@
+package com.transaction.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.transaction.commons.Observable;
+import com.transaction.commons.Observer;
+
+public class Sender implements Observable {
+	private List<Observer> allObservers;
+	private String companyName;
+	private String address;
+	Map<Observer,>
+
+	public List<Observer> getAllObservers() {
+		return allObservers;
+	}
+
+	public void setAllObservers(List<Observer> allObservers) {
+		this.allObservers = allObservers;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
+	public void registerObserver(Observer observer) {
+
+		if (this.allObservers == null) {
+			this.allObservers = new ArrayList<Observer>();
+		}
+
+		this.allObservers.add(observer);
+
+	}
+
+	@Override
+	public void deRegisterObserver(Observer observer) {
+		if(this.allObservers==null) {System.out.println("No observers found");
+		return;}
+		if(this.allObservers.contains(observer)) {
+			System.out.println("Removing thje observer");
+			return ;}
+		System.out.println("No observer found");
+		
+	}
+
+	@Override
+	public void notifyAllObservers() {
+
+		
+		
+		for (Observer observer : allObservers) {
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+	}
+
+	@Override
+	public void notifyObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void printStatement(Transaction transaction) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,9 @@
+package com.transaction.commons;
+
+public interface Observer {
+
+	String getNotify();
+	void addObservable(Observable subject);
+	
+	
+}

@@ -1,0 +1,59 @@
+package com.transaction.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.transaction.commons.Observable;
+import com.transaction.commons.Observer;
+
+public class Reciever implements Observer {
+	List<Transaction> transactionList = new ArrayList<Transaction>();
+	private String name;
+	private String contact;
+	private String email;
+
+	public List<Transaction> getTransactionList() {
+		return transactionList;
+	}
+
+	public void setTransactionList(List<Transaction> transactionList) {
+		this.transactionList = transactionList;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public Transaction getNotify() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addObservable(Observable subject) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

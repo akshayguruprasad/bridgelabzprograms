@@ -1,0 +1,5 @@
+package com.statement.serviceImpl;
+
+public class InventoryManage {
+
+}

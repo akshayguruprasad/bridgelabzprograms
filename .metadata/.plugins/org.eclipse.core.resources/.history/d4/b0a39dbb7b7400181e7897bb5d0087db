@@ -1,0 +1,55 @@
+package com.statement.serviceImpl;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class TableCreator {
+
+	
+	public static void generateTables() {
+		PreparedStatement ps=null;
+		Connection connection=null;
+		try {
+			File inventoryTable=new File("/home/bridgeit/inventory.sql");
+			StringBuffer QUERY=null;
+			FileReader fileReader=new FileReader(inventoryTable);
+			String query1=readFileContents(QUERY, fileReader);
+File requirementTable=new File("/home/bridgeit/requirementTable.sql");
+String query2=readFileContents(QUERY, fileReader);
+			
+			connection=ConncetionSupplier.getConnection();
+			ps=connection.prepareStatement(query1);
+			ps.addBatch();
+			ps.addBatch(query2);
+			
+			ps.executeBatch();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+			
+		}
+		
+		
+	}
+
+	private static String readFileContents(StringBuffer QUERY, FileReader fileReader) throws IOException {
+		int c=-1;
+		QUERY=new StringBuffer("");
+		while((c=fileReader.read())!=-1) {
+			
+			QUERY.append((char)c);
+			
+			
+		}
+		
+		return QUERY.toString();
+	}
+	
+	
+}
