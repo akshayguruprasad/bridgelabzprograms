@@ -1,2 +1,4 @@
+browser-choice=1
+browsers=<?xml version\="1.0" encoding\="UTF-8"?>\n<web-browsers current\="2">\n<system/>\n<external location\="/usr/bin/firefox" name\="Firefox"/>\n<external location\="/usr/bin/google-chrome" name\="Chrome"/>\n</web-browsers>
 eclipse.preferences.version=1
-internalWebBrowserHistory=file\:/home/bridgeit/Workspace/.metadata/.plugins/org.springsource.ide.eclipse.commons.gettingstarted/dashboard/1529469858069/index.html|*|file\:/home/bridgeit/Downloads/spring-tool-suite-3.9.2.RELEASE-e4.7.2-linux-gtk-x86_64/sts-bundle/sts-3.9.2.RELEASE/plugins/org.springsource.ide.eclipse.commons.gettingstarted_3.9.2.201712210818-RELEASE/resources/welcome/index.html|*|
+internalWebBrowserHistory=http\://localhost\:8080/DemoWeb/|*|file\:/home/bridgeit/Workspace/.metadata/.plugins/org.springsource.ide.eclipse.commons.gettingstarted/dashboard/1529469858069/index.html|*|file\:/home/bridgeit/Downloads/spring-tool-suite-3.9.2.RELEASE-e4.7.2-linux-gtk-x86_64/sts-bundle/sts-3.9.2.RELEASE/plugins/org.springsource.ide.eclipse.commons.gettingstarted_3.9.2.201712210818-RELEASE/resources/welcome/index.html|*|

@@ -1,4 +1,4 @@
-GitRepositoriesView.GitDirectories=/home/bridgeit/git/BridgeAllPrograms/.git\:
-GitRepositoriesView.GitDirectories.relative=/home/bridgeit/git/BridgeAllPrograms/.git\:
+GitRepositoriesView.GitDirectories=/home/bridgeit/.git\:/home/bridgeit/git/BridgeAllPrograms/.git\:
+GitRepositoriesView.GitDirectories.relative=/home/bridgeit/.git\:/home/bridgeit/git/BridgeAllPrograms/.git\:
 core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
