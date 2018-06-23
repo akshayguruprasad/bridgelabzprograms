@@ -174,7 +174,7 @@ public class BookManager implements VariableHolder, ManagerInterface {
 
 	@Override
 	public FactoryStreamSelector getFactory() {
-		return this.factory;
+		return factory;
 	}
 
 }

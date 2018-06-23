@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -276,9 +277,8 @@ public class Utility implements VariableHolder, Facade {
 	}
 
 	public static PersonEntity personToPersonEntity(Person person) {
-		
-		
-		System.out.println("{ mobile number }"+person.getMobileNumber());
+
+		System.out.println("{ mobile number }" + person.getMobileNumber());
 		PersonEntity personEntity = new PersonEntity();
 		AddressEntity addressEntity = new AddressEntity();
 
@@ -375,6 +375,20 @@ public class Utility implements VariableHolder, Facade {
 		}
 
 		return listPersons;
+	}
+
+	public static void closeResources(Connection connection) {
+		if (connection != null) {
+
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 }

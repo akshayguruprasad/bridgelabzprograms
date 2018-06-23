@@ -8,7 +8,6 @@ import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.interfaces.ManagerInterface;
 import com.application.addressbook.interfaces.VariableHolder;
 import com.application.addressbook.manager.BookManager;
-import com.application.addressbook.util.Facade;
 import com.application.addressbook.util.Utility;
 
 /**

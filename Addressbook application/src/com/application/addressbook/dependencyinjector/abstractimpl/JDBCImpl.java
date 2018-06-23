@@ -61,7 +61,7 @@ public class JDBCImpl extends FactoryStreamSelector {
 			} // EMPTY LIST FOUND DONT INSERT
 
 			// ELSE THE CONTACT LIST IS VALID
-System.out.println(book.getContactList());
+			System.out.println(book.getContactList());
 			contactdao = new DaoContactImpl();
 			addressMapperdao = new DaoAddressMapperImpl();
 			List<Integer> validIds = addressMapperdao.selectAllContact(connection, bdAddressBook.getId());
@@ -139,12 +139,15 @@ System.out.println(book.getContactList());
 
 		} catch (Exception e) {
 			System.err.println("Exception occures [JDBCImpl][writeData] :: " + e.getMessage());
-			e.printStackTrace();
 			try {
 				connection.rollback();
 			} catch (Exception e1) {
 				System.err.println("Exception occures [JDBCImpl][rollback] :: " + e.getMessage());
 			}
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 
 	}
@@ -185,8 +188,11 @@ System.out.println(book.getContactList());
 		} catch (Exception e) {
 
 			System.err.println("Exception occured [JDBCImpl][readData] : " + e.getMessage());
-		}
+		} finally {
 
+			Utility.closeResources(connection);
+
+		}
 		return addressBook;
 
 	}
@@ -210,6 +216,10 @@ System.out.println(book.getContactList());
 
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][isAddressBookNamePresent] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return false;
 	}
@@ -237,6 +247,10 @@ System.out.println(book.getContactList());
 
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][getListAddressBook] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return null;
 	}
@@ -258,6 +272,10 @@ System.out.println(book.getContactList());
 			return true;
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][deleteAddressBook] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return false;
 	}
