@@ -26,13 +26,6 @@ public class AddressBookApplication implements VariableHolder {
 	 * 
 	 */
 	static ManagerInterface manager;
-	static final int choiceStore;
-	static {
-		System.out.println("Save in 1.file or 2.database");
-		choiceStore = 1;
-
-	}
-//	static final Facade util = new Utility();
 
 	public static void main(String... args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
@@ -40,34 +33,29 @@ public class AddressBookApplication implements VariableHolder {
 			manager = new BookManager();
 			manager.setFactory(new JDBCImpl());
 		}
-
+		System.out.println("---------------------------------------");
 		System.out.println("  WELCOME PAGE   ");
-		System.out.println("1 manager mode");
-		System.out.println("2 user mode");
+		System.out.println("---------------------------------------");
+		System.out.println("1.Manager mode");
+		System.out.println("2.User mode");
+
 		int choice = Utility.getUserInteger();
 		if (args.length > 0) {
-
 			choice = Integer.parseInt(args[0]);
 		}
 		switch (choice) {
 		case 1:
 			dashBoard(manager);
-
 			break;
-
 		default:
-
 			if (manager.getBook() == null) {
-
 				System.out.println("Create book first");
-
 				main();
 				return;
 			}
 			dashBoard(manager.getBook());
 			break;
 		}
-
 	}
 
 	/**
@@ -84,8 +72,8 @@ public class AddressBookApplication implements VariableHolder {
 			BookManager manager = (BookManager) worker;
 			System.out.println("manager mode set");
 			while (true) {
-				System.out.println();
-				System.out.println();
+
+				System.out.println("_______________________________________");
 				System.out.println("1.create new address book");
 				System.out.println("2.list all address books");
 				System.out.println("3.delete address  book");
@@ -93,6 +81,7 @@ public class AddressBookApplication implements VariableHolder {
 				System.out.println("5.Read address books");
 				System.out.println("6.close address book withou saving");
 				System.out.println("7.main menu");
+				System.out.println("_______________________________________");
 				int managerChoice = Utility.getUserInteger();
 				switch (managerChoice) {
 				case 1:
@@ -108,7 +97,7 @@ public class AddressBookApplication implements VariableHolder {
 					manager.deleteAddressBook(bookName);
 					break;
 				case 4:
-					
+
 					System.out.println("printing the contenrts for book");
 					System.out.println(manager.getBook());
 					manager.saveAddressBook(manager.getBook());
@@ -135,6 +124,7 @@ public class AddressBookApplication implements VariableHolder {
 			AddressBook user = (AddressBook) worker;
 			System.out.println("You are in address book : " + user.getAddressBookName());
 			while (true) {
+				System.out.println("_______________________________________");
 				System.out.println("1.Add person");
 				System.out.println("2.remove person");
 				System.out.println("3.edit person");
@@ -144,7 +134,7 @@ public class AddressBookApplication implements VariableHolder {
 				System.out.println("7.sort the address by name");
 				System.out.println("8.display all persons");
 				System.out.println("9.main menu");
-
+				System.out.println("_______________________________________");
 				int userChoice = Utility.getUserInteger();
 				switch (userChoice) {
 				case 1:
@@ -178,24 +168,18 @@ public class AddressBookApplication implements VariableHolder {
 				case 8:
 					user.displayAllPersons();
 					break;
-
 				default:
-				
 					main();
-
 					break;
 				}
 				// PERFORM ALL SAVE OPERATIONS AFTER THE USER MODE
 				if (user.getIsChangedSinceLastSave()) {
-
 					if (user.getAddressBookName().equalsIgnoreCase(UNTITLED)) {
-
 						System.out.println("Save the Address book with a name ");
 						AddressBookApplication.manager.getManager().setBook(user);
 						System.out.println("redirecting to manager mode");
 						main("1");
 						return;
-
 					}
 					AddressBookApplication.manager.getManager().getFactory().writeData(user);
 					System.out.println("Auto save complete");

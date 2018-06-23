@@ -31,12 +31,8 @@ import com.application.addressbook.interfaces.VariableHolder;
  * @since 05-Jun-2018
  */
 
-public class Utility implements VariableHolder, Facade {
+public class Utility implements VariableHolder{
 	private static final Scanner scanner = new Scanner(System.in);
-	final static String FILEPATH = "/home/bridgeit/AddressBook";
-	final static String UNTITLED = "Untitled";
-	final static String PATHSEPERATOR = "/";
-	final static String EXT = ".json";
 
 	/**
 	 * @param person
@@ -209,7 +205,6 @@ public class Utility implements VariableHolder, Facade {
 	 */
 	public static void printMessages(String string) {
 		System.out.println(string);
-
 	}
 
 	/**
@@ -249,36 +244,8 @@ public class Utility implements VariableHolder, Facade {
 		return null;
 	}
 
-	/**
-	 * @param choicestore2
-	 * @param book
-	 * 
-	 */
-	public void storageType(int choice, AddressBook book) {
-		switch (choice) {
-		case 1:
-			/*
-			 * // store as a json file ObjectMapper mapper =
-			 * AddressBookIO.getObjectmapper(); Utility.write(mapper,
-			 * book.getAddressBookLocation(), book);
-			 */
-			System.out.println("Stored as json ");
-
-			break;
-		case 2:
-			System.out.println("Saving to as db");
-
-			break;
-		default:
-
-			System.out.println("Invalid choice");
-			break;
-		}
-	}
-
 	public static PersonEntity personToPersonEntity(Person person) {
 
-		System.out.println("{ mobile number }" + person.getMobileNumber());
 		PersonEntity personEntity = new PersonEntity();
 		AddressEntity addressEntity = new AddressEntity();
 
@@ -366,29 +333,37 @@ public class Utility implements VariableHolder, Facade {
 
 	}
 
-	public static List<Person> personEntityToPersonList(List<PersonEntity> personEntityList) {
+	public static List<Person> personEntityListToPersonList(List<PersonEntity> personEntityList) {
 		List<Person> listPersons = new ArrayList<Person>();
 		for (PersonEntity personEntity : personEntityList) {
-
 			listPersons.add(personEntityToPerson(personEntity));
-
 		}
-
 		return listPersons;
 	}
 
 	public static void closeResources(Connection connection) {
 		if (connection != null) {
-
 			try {
 				connection.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static List<PersonEntity> mapAllPersonValues(List<PersonEntity> updateContact,
+			List<PersonEntity> bookContacts) {
+
+		for (int i = 0; i < updateContact.size(); i++) {
+
+			updateContact.get(i).setAddress(bookContacts.get(i).getAddress());
+
+			updateContact.get(i).setMobile(bookContacts.get(i).getMobile());
 
 		}
 
+		return updateContact;
 	}
 
 }

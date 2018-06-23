@@ -45,11 +45,13 @@ public class DaoAddressImpl implements DaoAddress {
 		// UPDATE ADDRESS SET CITY=?,STATE=?,LOCATION=?,ZIP=? WHERE ID=?
 		int isUpdated = 0;
 		PreparedStatement ps = null;
-		System.out.println("+=======================================================================================================+");
+		System.out.println(
+				"+=======================================================================================================+");
 
-System.out.println(address);		
+		System.out.println(address);
 		System.out.println(id);
-		System.out.println("+=======================================================================================================+");
+		System.out.println(
+				"+=======================================================================================================+");
 
 		try {
 			ps = connection.prepareStatement(UPDATE_ADDRESS);

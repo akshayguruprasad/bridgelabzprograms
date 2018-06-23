@@ -10,15 +10,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.application.addressbook.dependencyinjector.abstractclass.FactoryStreamSelector;
 import com.application.addressbook.entities.AddressBook;
+import com.application.addressbook.interfaces.VariableHolder;
 import com.application.addressbook.io.AddressBookIO;
 import com.application.addressbook.util.Utility;
 
-public class JSONImplementor extends FactoryStreamSelector {
-
-	String FILEPATH = "/home/bridgeit/AddressBook";
-	String UNTITLED = "Untitled";
-	String PATHSEPERATOR = "/";
-	String EXT = ".json";
+public class JSONImplementor extends FactoryStreamSelector implements VariableHolder {
 
 	FileFilter fileFilter = (file) -> {
 		if (file.getName().endsWith(EXT)) {
@@ -30,7 +26,7 @@ public class JSONImplementor extends FactoryStreamSelector {
 
 	@Override
 	public void writeData(AddressBook book) {
-		System.out.println("Writeing the address book to file");
+		System.out.println("Writing the address book to json file");
 		ObjectMapper mapper = AddressBookIO.getObjectmapper();
 		Utility.write(mapper, new File(FILEPATH + PATHSEPERATOR + book.getAddressBookName() + EXT), book);
 	}
@@ -64,9 +60,10 @@ public class JSONImplementor extends FactoryStreamSelector {
 		File file = new File(FILEPATH + PATHSEPERATOR);
 
 		if (file.isDirectory()) {
-		
+
 			List<String> fileNameHolder = Arrays.asList(file.listFiles()).stream()
-					.filter(p -> this.fileFilter.accept(p)).map(p->p.getName().split(EXT)[0]).collect(Collectors.toList());
+					.filter(p -> this.fileFilter.accept(p)).map(p -> p.getName().split(EXT)[0])
+					.collect(Collectors.toList());
 
 			fileNames = fileNameHolder.toArray(fileNames);
 

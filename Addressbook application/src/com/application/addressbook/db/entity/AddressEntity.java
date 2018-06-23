@@ -1,6 +1,11 @@
 package com.application.addressbook.db.entity;
 
 public class AddressEntity {
+@Override
+	public String toString() {
+		return "AddressEntity [city=" + city + ", state=" + state + ", zip=" + zip + ", location=" + location + ", id="
+				+ id + "]";
+	}
 String city;
 String state;
 String zip;

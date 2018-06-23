@@ -8,4 +8,7 @@ package com.application.addressbook.interfaces;
 
 public interface VariableHolder {
 	String UNTITLED = "Untitled";
+	final static String FILEPATH = "/home/bridgeit/AddressBook";
+	final static String PATHSEPERATOR = "/";
+	final static String EXT = ".json";
 }
