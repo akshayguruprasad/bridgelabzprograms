@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TableCreator {
 
 	public static void generateTables() {
-		PreparedStatement ps = null;
+		Statement ps = null;
 		Connection connection = null;
 		try {
 			File inventoryTable = new File("/home/bridgeit/inventory.sql");
@@ -21,18 +22,34 @@ public class TableCreator {
 			String query2 = readFileContents(QUERY, fileReader);
 
 			connection = ConncetionSupplier.getConnection();
-			ps = connection.prepareStatement(query1);
-			ps.addBatch();
+			ps = connection.createStatement();
+			ps.addBatch(query1);
 			ps.addBatch(query2);
 
-			ps.execute();
+			ps.executeBatch();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		finally {
-
+if(connection!=null) {
+	try {
+		connection.close();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+if(ps!=null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+}
 		}
 
 	}

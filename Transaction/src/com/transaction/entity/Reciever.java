@@ -1,5 +1,7 @@
 package com.transaction.entity;
 
+import java.text.DecimalFormat;
+
 import com.transaction.commons.Observable;
 import com.transaction.commons.Observer;
 
@@ -48,8 +50,16 @@ public class Reciever implements Observer {
 
 	@Override
 	public void getNotify(Transaction transaction) {
-		this.bank.getTransactionList().add(transaction);
-		System.out.println(transaction);
+		this.bank.setBalance(this.bank.getBalance() + transaction.getAmount());
+		System.out.println("=============================================================");
+
+		System.out.println("SMS ALERT");
+		System.out.println("=============================================================");
+DecimalFormat format=new DecimalFormat("##,##,##,###.##");
+		System.out.println("Credited amount : " + format.format(transaction.getAmount()));
+		System.out.println("Sender          : " + transaction.getSender());
+		System.out.println("Credited time   : " + transaction.getDate());
+		System.out.println("-------------------------------------------------------------");
 	}
 
 	@Override
@@ -59,7 +69,7 @@ public class Reciever implements Observer {
 
 	@Override
 	public long getAccount() {
-		return this.bank.getAccountNumber();
+		return this.bank.getBankAccount();
 	}
 
 }

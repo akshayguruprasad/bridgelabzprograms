@@ -11,6 +11,7 @@ public class Connection extends BaseConnection {
 		try {
 			Class.forName(Credentials.CLASS);
 			connection = DriverManager.getConnection(Credentials.DBURL, Credentials.USER, Credentials.PASSWORD);
+			connection.setAutoCommit(false);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Exception occured [Connection][static] : " + e.getMessage());
 		} catch (SQLException e) {
@@ -25,6 +26,7 @@ public class Connection extends BaseConnection {
 
 	@SuppressWarnings("static-access")
 	public static java.sql.Connection getConnection() {
+		
 		return new Connection().connection;
 	}
 

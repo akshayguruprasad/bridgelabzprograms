@@ -20,6 +20,14 @@ public class Utility {
 		return data;
 	}
 
+	public static long getLong() {
+
+		long data = scanner.nextLong();
+		scanner.nextLine();
+		return data;
+
+	}
+
 	/**
 	 * GET CONSOLE INPUTS STRINGS
 	 * 
@@ -47,7 +55,21 @@ public class Utility {
 	 * @param statement
 	 * @param resultSet
 	 */
-	public final static void freeResources(Connection connection, Statement statement, ResultSet... resultSet) {
+	public final static void freeResources(Connection connection) {
+
+		if (connection != null) {
+
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				System.err.println("Exception occured [Utility][freeResources] : " + e.getMessage());
+			}
+
+		}
+
+	}
+
+	public final static void freeResources(Statement statement, ResultSet... resultSet) {
 
 		for (ResultSet resultSetEach : resultSet) {
 			if (resultSetEach != null) {// INSTANCE FOUND
@@ -63,15 +85,6 @@ public class Utility {
 
 			try {
 				statement.close();
-			} catch (SQLException e) {
-				System.err.println("Exception occured [Utility][freeResources] : " + e.getMessage());
-			}
-
-		}
-		if (connection != null) {
-
-			try {
-				connection.close();
 			} catch (SQLException e) {
 				System.err.println("Exception occured [Utility][freeResources] : " + e.getMessage());
 			}

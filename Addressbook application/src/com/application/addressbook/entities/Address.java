@@ -10,7 +10,13 @@ import java.io.Serializable;
 
 public class Address implements Serializable {
 
-    /**
+    @Override
+	public String toString() {
+		return "Address [addressLocation=" + addressLocation + ", city=" + city + ", state=" + state + ", zipCode="
+				+ zipCode + "]";
+	}
+
+	/**
      * 
      */
     private static final long serialVersionUID = 1L;

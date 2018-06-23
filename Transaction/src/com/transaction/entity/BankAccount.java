@@ -1,43 +1,21 @@
 package com.transaction.entity;
 
-import java.util.List;
-
 public class BankAccount {
-	private List<Transaction> transactionList;
-	public List<Transaction> getTransactionList() {
-		return transactionList;
-	}
+	double balance;
+	long bankAccount;
 
-	public void setTransactionList(List<Transaction> transactionList) {
-		this.transactionList = transactionList;
+	public double getBalance() {
+		return balance;
 	}
-
-	private String IFSC;
-	private long accountNumber;
-	private String branchDetails;
-
-	public String getIFSC() {
-		return IFSC;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
-
-	public void setIFSC(String iFSC) {
-		IFSC = iFSC;
+	public long getBankAccount() {
+		return bankAccount;
 	}
-
-	public long getAccountNumber() {
-		return accountNumber;
+	public void setBankAccount(long bankAccount) {
+		this.bankAccount = bankAccount;
 	}
-
-	public void setAccountNumber(long accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-
-	public String getBranchDetails() {
-		return branchDetails;
-	}
-
-	public void setBranchDetails(String branchDetails) {
-		this.branchDetails = branchDetails;
-	}
+	
 
 }

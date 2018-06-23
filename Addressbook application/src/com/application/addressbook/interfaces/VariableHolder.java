@@ -7,8 +7,5 @@ package com.application.addressbook.interfaces;
  */
 
 public interface VariableHolder {
-    String FILEPATH = "/home/bridgeit/AddressBook";
-    String UNTITLED = "Untitled";
-    String PATHSEPERATOR = "/";
-    String EXT=".txt";
+	String UNTITLED = "Untitled";
 }

@@ -1,5 +1,6 @@
 package com.transaction.commons;
 
+import com.transaction.entity.BankAccount;
 import com.transaction.entity.Transaction;
 
 public interface Observable {
@@ -8,10 +9,14 @@ public interface Observable {
 
 	void deRegisterObserver(Observer observer);
 
-	void notifyAllObservers();
 
 	void notifyObserver(Observer observer);
 
-	void printStatement(Transaction transaction);
+	long getAccountNumber();
+
+	void setBank(BankAccount bank);
+
+	void setTranscation(Transaction transcation);
+	
 
 }

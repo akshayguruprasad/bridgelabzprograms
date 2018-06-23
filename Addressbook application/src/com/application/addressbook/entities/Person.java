@@ -11,7 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Person implements Serializable {
 
-    /**
+    @Override
+	public String toString() {
+		return "Person [firstName=" + firstName + ", lastName=" + lastName + ", mobileNumber=" + mobileNumber
+				+ ", address=" + address + "]";
+	}
+
+	/**
      * 
      */
     private static final long serialVersionUID = 1L;

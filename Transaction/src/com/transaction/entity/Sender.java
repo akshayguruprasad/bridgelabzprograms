@@ -13,11 +13,35 @@ public class Sender implements Observable {
 	private String companyName;
 	private String address;
 	private Transaction transcation;
+	private BankAccount bank;
+
+	public Sender(String companyName, String address, Transaction transcation, BankAccount bank) {
+		this.companyName = companyName;
+		this.address = address;
+		this.transcation = transcation;
+		this.bank = bank;
+
+	}
+
+	public Sender(String name, String address) {
+		this.companyName = name;
+		this.address = address;
+	}
+
+	public BankAccount getBank() {
+		return bank;
+	}
+
+	@Override
+	public void setBank(BankAccount bank) {
+		this.bank = bank;
+	}
 
 	public Transaction getTranscation() {
 		return transcation;
 	}
 
+	@Override
 	public void setTranscation(Transaction transcation) {
 		this.transcation = transcation;
 	}
@@ -89,27 +113,22 @@ public class Sender implements Observable {
 
 	}
 
-	@Override
-	public void notifyAllObservers() {
 
-	//stub
-
-	}
 
 	@Override
 	public void notifyObserver(Observer observer) {
-		
-		
-		
+
+		this.transcation.setSender(companyName + " from " + address);
+		observer.getNotify(this.transcation);
+		this.transcation = null;
 
 	}
 
-	@Override
-	public void printStatement(Transaction transaction) {
 	
 
-		
-
+	@Override
+	public long getAccountNumber() {
+		return this.bank.getBankAccount();
 	}
 
 }
