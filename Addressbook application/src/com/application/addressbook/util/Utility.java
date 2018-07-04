@@ -1,11 +1,11 @@
 package com.application.addressbook.util;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -25,7 +24,6 @@ import com.application.addressbook.entities.Address;
 import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.entities.Person;
 import com.application.addressbook.interfaces.VariableHolder;
-import com.application.addressbook.io.AddressBookIO;
 
 /**
  * @author Akshay
@@ -33,12 +31,8 @@ import com.application.addressbook.io.AddressBookIO;
  * @since 05-Jun-2018
  */
 
-public class Utility implements VariableHolder, Facade {
+public class Utility implements VariableHolder{
 	private static final Scanner scanner = new Scanner(System.in);
-	static String FILEPATH = "/home/bridgeit/AddressBook";
-	String UNTITLED = "Untitled";
-	static String PATHSEPERATOR = "/";
-	static String EXT = ".json";
 
 	/**
 	 * @param person
@@ -211,7 +205,6 @@ public class Utility implements VariableHolder, Facade {
 	 */
 	public static void printMessages(String string) {
 		System.out.println(string);
-
 	}
 
 	/**
@@ -251,34 +244,8 @@ public class Utility implements VariableHolder, Facade {
 		return null;
 	}
 
-	/**
-	 * @param choicestore2
-	 * @param book
-	 * 
-	 */
-	public void storageType(int choice, AddressBook book) {
-		switch (choice) {
-		case 1:
-			/*
-			 * // store as a json file ObjectMapper mapper =
-			 * AddressBookIO.getObjectmapper(); Utility.write(mapper,
-			 * book.getAddressBookLocation(), book);
-			 */
-			System.out.println("Stored as json ");
-
-			break;
-		case 2:
-			System.out.println("Saving to as db");
-
-			break;
-		default:
-
-			System.out.println("Invalid choice");
-			break;
-		}
-	}
-
 	public static PersonEntity personToPersonEntity(Person person) {
+
 		PersonEntity personEntity = new PersonEntity();
 		AddressEntity addressEntity = new AddressEntity();
 
@@ -332,6 +299,7 @@ public class Utility implements VariableHolder, Facade {
 		Address address = new Address();
 		address.setAddressLocation(addressEntity.getLocation());
 		address.setCity(addressEntity.getCity());
+		address.setZipCode(addressEntity.getZip());
 		address.setState(addressEntity.getState());
 		return address;
 	}
@@ -365,15 +333,37 @@ public class Utility implements VariableHolder, Facade {
 
 	}
 
-	public static List<Person> personEntityToPersonList(List<PersonEntity> personEntityList) {
+	public static List<Person> personEntityListToPersonList(List<PersonEntity> personEntityList) {
 		List<Person> listPersons = new ArrayList<Person>();
 		for (PersonEntity personEntity : personEntityList) {
-
 			listPersons.add(personEntityToPerson(personEntity));
+		}
+		return listPersons;
+	}
+
+	public static void closeResources(Connection connection) {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static List<PersonEntity> mapAllPersonValues(List<PersonEntity> updateContact,
+			List<PersonEntity> bookContacts) {
+
+		for (int i = 0; i < updateContact.size(); i++) {
+
+			updateContact.get(i).setAddress(bookContacts.get(i).getAddress());
+
+			updateContact.get(i).setMobile(bookContacts.get(i).getMobile());
 
 		}
 
-		return listPersons;
+		return updateContact;
 	}
 
 }

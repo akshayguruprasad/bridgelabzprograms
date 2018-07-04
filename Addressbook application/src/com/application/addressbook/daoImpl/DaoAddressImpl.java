@@ -42,9 +42,16 @@ public class DaoAddressImpl implements DaoAddress {
 
 	@Override
 	public int updateAddress(Connection connection, Address address, int id) {
-		// update address set city=?,state=?,location=?,zip=? where id=?
+		// UPDATE ADDRESS SET CITY=?,STATE=?,LOCATION=?,ZIP=? WHERE ID=?
 		int isUpdated = 0;
 		PreparedStatement ps = null;
+		System.out.println(
+				"+=======================================================================================================+");
+
+		System.out.println(address);
+		System.out.println(id);
+		System.out.println(
+				"+=======================================================================================================+");
 
 		try {
 			ps = connection.prepareStatement(UPDATE_ADDRESS);

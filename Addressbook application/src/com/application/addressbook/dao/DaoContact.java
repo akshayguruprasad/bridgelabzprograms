@@ -9,7 +9,7 @@ import com.application.addressbook.entities.Person;
 public interface DaoContact {
 String SELECTCONTACT="select * from contact where id=?";
 String INSERT_BY_ADDRESSID="insert into contact(contactfirstname,contactlastname,mobile,addressid) values(?,?,?,?)";
-String UPDATE_CONTACT_BY_ID="update contact set mobile=?";
+String UPDATE_CONTACT_BY_ID="update contact set mobile=? where id=?";
 
 	int insertContact(Connection connection, Person contact, int index);
 

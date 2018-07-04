@@ -75,7 +75,7 @@ public class PersonEntity  {
 		p.setMobileNumber(p1.getMobile());
 
 		if (this.contactFirstName.equals(p.getFirstName()) && this.contactLastName.equals(p.getLastName())
-				&& this.mobile.equals(p.getMobileNumber())) {
+			/*	&& this.mobile.equals(p.getMobileNumber())*/) {
 
 			return true;
 

@@ -1,5 +1,7 @@
 package com.application.addressbook.dependencyinjector.abstractimpl;
 
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
-
+import com.application.addressbook.annotations.ServiceImpl;
 import com.application.addressbook.dao.DaoAddress;
 import com.application.addressbook.dao.DaoAddressBook;
 import com.application.addressbook.dao.DaoAddressMapper;
@@ -26,11 +27,12 @@ import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.entities.Person;
 import com.application.addressbook.util.Utility;
 
+@ServiceImpl(implementedValue="jdbc")
 public class JDBCImpl extends FactoryStreamSelector {
-	String DBURL = "jdbc:mysql://localhost:3306/addressbook?useSSL=false";
-	String PASSWORD = "password";
-	String USER = "akshay";
-	String CLASS = "com.mysql.cj.jdbc.Driver";
+	private String DBURL = "jdbc:mysql://localhost:3306/addressbook?useSSL=false";
+	private String PASSWORD = "password";
+	private String USER = "akshay";
+	private String CLASS = "com.mysql.cj.jdbc.Driver";
 
 	@Override
 	public void writeData(AddressBook book) {
@@ -41,115 +43,149 @@ public class JDBCImpl extends FactoryStreamSelector {
 		DaoAddress addressdao = null;
 		AddressBookEntity bdAddressBook = null;
 		DaoAddressMapper addressMapperdao = null;
-		AddressEntity addressEntity = null;
 		try {
 			connection = getConnection();
 
 			addressBookName = book.getAddressBookName();
 			addressBookdao = new DaoAddressBookImp();
 			bdAddressBook = addressBookdao.selectAddressBook(connection, addressBookName);
-			if (bdAddressBook == null) {
-				int addressbookId = addressBookdao.insertAddressBook(connection, book);
-				// SAVE THE ADDRESS BOOK AS NEW ENTRY
-				// GET THE GENERATED ID
-				bdAddressBook = new AddressBookEntity();
-				bdAddressBook.setId(addressbookId);
-
-			}
-
-			if (book.getContactList() == null || book.getContactList().size() == 0) {
-				connection.commit();
-				return;
-			} // EMPTY LIST FOUND DONT INSERT
-
-			// ELSE THE CONTACT LIST IS VALID
-
-			contactdao = new DaoContactImpl();
+			bdAddressBook = addressBookGenerator(book, connection, addressBookdao, bdAddressBook);
 			addressMapperdao = new DaoAddressMapperImpl();
-			List<Integer> validIds = addressMapperdao.selectAllContact(connection, bdAddressBook.getId());
-			List<PersonEntity> personEntityList = contactdao.selectAllContacts(connection, validIds);
+			deleteAllContacts(book, connection, bdAddressBook, addressMapperdao);
+			contactdao = new DaoContactImpl();
+			List<PersonEntity> personEntityList = getPersonEntityList(connection, contactdao, bdAddressBook,
+					addressMapperdao);
 			addressdao = new DaoAddressImpl();
-			for (PersonEntity personEntity : personEntityList) {
-				addressEntity = addressdao.selectAddress(connection, personEntity.getAddressId());
-				personEntity.setAddress(addressEntity);
-			}
+			getDetailsedPersonEntity(connection, addressdao, personEntityList);
 			List<PersonEntity> bookContacts = Utility.getPersonEntityList(book.getContactList());
-			List<PersonEntity> deleteContacts = new ArrayList<PersonEntity>(personEntityList);
-
-			// DELETE CONTACTS
-			deleteContacts.removeAll(bookContacts);
-			for (PersonEntity personEntity : deleteContacts) {
-
-				// PERFORM DELETE ON MAPPER
-				int deletedContact = addressMapperdao.deleteContact(connection, personEntity.getId());
-
-				if (deletedContact < 1) {
-					throw new Exception("Failed to delete the contact");
-				}
-			}
-			
-			
-			System.out.println("The value of it is "+bookContacts);
-			List<PersonEntity> updateContact = new ArrayList<PersonEntity>(personEntityList);
-			System.out.println("before "+updateContact);
-			updateContact.retainAll(bookContacts);
-			System.out.println("After filteriong for updates "+updateContact);
-			for (PersonEntity personEntity : updateContact) {
-				// UPDATE THE CONTACTS
-				Address address = Utility.personEntityToAddress(personEntity);
-
-				int updatedAddress = addressdao.updateAddress(connection, address, personEntity.getAddress().getId());
-				if (updatedAddress < 1) {
-
-					throw new Exception("Failed to update the address");
-
-				}
-				int updateContactValue = contactdao.updateContact(connection,
-						Utility.personEntityToPerson(personEntity), personEntity.getId());
-
-				if (updateContactValue < 1) {
-					throw new Exception("Failed to update the contact");
-
-				}
-			}
-
-			// NEW CONTACTS ADD
-			bookContacts.removeAll(personEntityList);
-			addressdao = new DaoAddressImpl();
-			for (PersonEntity personEntity : bookContacts) {
-				Person person = Utility.personEntityToPerson(personEntity);
-				int addressId = addressdao.insertAddress(connection, person.getAddress());
-				if (addressId < 1) {
-					throw new Exception("Failed to insert the address");
-
-				}
-				int contactId = contactdao.insertContact(connection, person, addressId);
-				if (contactId < 1) {
-
-					throw new Exception("Failed to insert the contact");
-
-				}
-				System.out.println("address book id : " + bdAddressBook.getId());
-				System.out.println("contact " + contactId);
-				int mapperId = addressMapperdao.insertAddressBookMapper(connection, contactId, bdAddressBook.getId());
-				System.out.println(mapperId + " the value of mapper value !!");
-				if (mapperId < 1) {
-					throw new Exception("Failed to insert the mapper details");
-				}
-			}
+			deleteContacts(connection, addressMapperdao, personEntityList,
+					bookContacts);/* FILTER OUT THE CONTACTS FROM OLD TO NEW AND SELECT ONES TO DELETE */
+			updateContacts(connection, contactdao, addressdao, personEntityList,
+					bookContacts);/* FILTER OUT THE CONTACTS FROM OLD TO NEW AND SELECT ONES TO UPDATE */
+			insertContacts(connection, contactdao, bdAddressBook, addressMapperdao, personEntityList,
+					bookContacts);/* FILTER OUT THE CONTACTS FROM OLD TO NEW AND SELECT ONES TO INSERT */
 			System.out.println("Saved success");
 			connection.commit();
 
 		} catch (Exception e) {
 			System.err.println("Exception occures [JDBCImpl][writeData] :: " + e.getMessage());
-			e.printStackTrace();
 			try {
 				connection.rollback();
 			} catch (Exception e1) {
 				System.err.println("Exception occures [JDBCImpl][rollback] :: " + e.getMessage());
 			}
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 
+	}
+
+	private void getDetailsedPersonEntity(Connection connection, DaoAddress addressdao,
+			List<PersonEntity> personEntityList) {
+		AddressEntity addressEntity;
+		for (PersonEntity personEntity : personEntityList) {
+			addressEntity = addressdao.selectAddress(connection, personEntity.getAddressId());
+			personEntity.setAddress(addressEntity);
+		}
+	}
+
+	private void insertContacts(Connection connection, DaoContact contactdao, AddressBookEntity bdAddressBook,
+			DaoAddressMapper addressMapperdao, List<PersonEntity> personEntityList, List<PersonEntity> bookContacts)
+			throws Exception {
+		DaoAddress addressdao;
+		// NEW CONTACTS ADD
+		bookContacts.removeAll(personEntityList);
+		addressdao = new DaoAddressImpl();
+		for (PersonEntity personEntity : bookContacts) {
+			Person person = Utility.personEntityToPerson(personEntity);
+			int addressId = addressdao.insertAddress(connection, person.getAddress());
+			if (addressId < 1) {
+				throw new Exception("Failed to insert the address");
+
+			}
+			int contactId = contactdao.insertContact(connection, person, addressId);
+			if (contactId < 1) {
+
+				throw new Exception("Failed to insert the contact");
+
+			}
+			int mapperId = addressMapperdao.insertAddressBookMapper(connection, contactId, bdAddressBook.getId());
+			System.out.println(mapperId + " the value of mapper value !!");
+			if (mapperId < 1) {
+				throw new Exception("Failed to insert the mapper details");
+			}
+		}
+	}
+
+	private void updateContacts(Connection connection, DaoContact contactdao, DaoAddress addressdao,
+			List<PersonEntity> personEntityList, List<PersonEntity> bookContacts) throws Exception {
+		List<PersonEntity> updateContact = new ArrayList<PersonEntity>(personEntityList);
+		updateContact.retainAll(bookContacts);
+		updateContact = Utility.mapAllPersonValues(updateContact, bookContacts);
+		for (PersonEntity personEntity : updateContact) {
+			// UPDATE THE CONTACTS
+			Address address = Utility.personEntityToAddress(personEntity);
+			int updatedAddress = addressdao.updateAddress(connection, address, personEntity.getAddressId());
+			if (updatedAddress < 1) {
+
+				throw new Exception("Failed to update the address");
+
+			}
+			int updateContactValue = contactdao.updateContact(connection, Utility.personEntityToPerson(personEntity),
+					personEntity.getId());
+
+			if (updateContactValue < 1) {
+				throw new Exception("Failed to update the contact");
+
+			}
+		}
+	}
+
+	private void deleteContacts(Connection connection, DaoAddressMapper addressMapperdao,
+			List<PersonEntity> personEntityList, List<PersonEntity> bookContacts) throws Exception {
+		List<PersonEntity> deleteContacts = new ArrayList<PersonEntity>(personEntityList);
+
+		// DELETE CONTACTS
+		deleteContacts.removeAll(bookContacts);
+		for (PersonEntity personEntity : deleteContacts) {
+			// PERFORM DELETE ON MAPPER
+			int deletedContact = addressMapperdao.deleteContact(connection, personEntity.getId());
+
+			if (deletedContact < 1) {
+				throw new Exception("Failed to delete the contact");
+			}
+		}
+	}
+
+	private List<PersonEntity> getPersonEntityList(Connection connection, DaoContact contactdao,
+			AddressBookEntity bdAddressBook, DaoAddressMapper addressMapperdao) {
+		List<Integer> validIds = addressMapperdao.selectAllContact(connection, bdAddressBook.getId());
+		List<PersonEntity> personEntityList = contactdao.selectAllContacts(connection, validIds);
+		return personEntityList;
+	}
+
+	private void deleteAllContacts(AddressBook book, Connection connection, AddressBookEntity bdAddressBook,
+			DaoAddressMapper addressMapperdao) throws SQLException {
+		if (book.getContactList().size() == 0) {
+			addressMapperdao.deleteAddressBookMapper(connection, bdAddressBook.getId());
+			connection.commit();
+
+		}
+	}
+
+	private AddressBookEntity addressBookGenerator(AddressBook book, Connection connection,
+			DaoAddressBook addressBookdao, AddressBookEntity bdAddressBook) {
+		if (bdAddressBook == null) {
+			int addressbookId = addressBookdao.insertAddressBook(connection, book);
+			// SAVE THE ADDRESS BOOK AS NEW ENTRY
+			// GET THE GENERATED ID
+			bdAddressBook = new AddressBookEntity();
+			bdAddressBook.setId(addressbookId);
+
+		}
+		return bdAddressBook;
 	}
 
 	@Override
@@ -161,7 +197,6 @@ public class JDBCImpl extends FactoryStreamSelector {
 		DaoAddress addressdao = null;
 		AddressBookEntity bdAddressBook = null;
 		DaoAddressMapper addressMapperdao = null;
-		AddressEntity addressEntity = null;
 		List<Integer> validIds = null;
 		try {
 			connection = getConnection();
@@ -180,16 +215,16 @@ public class JDBCImpl extends FactoryStreamSelector {
 			contactdao = new DaoContactImpl();
 			List<PersonEntity> personEntityList = contactdao.selectAllContacts(connection, validIds);
 			addressdao = new DaoAddressImpl();
-			for (PersonEntity personEntity : personEntityList) {
-				addressEntity = addressdao.selectAddress(connection, personEntity.getAddressId());
-				personEntity.setAddress(addressEntity);
-			}
-			addressBook.setContactList(Utility.personEntityToPersonList(personEntityList));
+			getDetailsedPersonEntity(connection, addressdao, personEntityList);
+			addressBook.setContactList(Utility.personEntityListToPersonList(personEntityList));
 		} catch (Exception e) {
 
 			System.err.println("Exception occured [JDBCImpl][readData] : " + e.getMessage());
-		}
+		} finally {
 
+			Utility.closeResources(connection);
+
+		}
 		return addressBook;
 
 	}
@@ -213,6 +248,10 @@ public class JDBCImpl extends FactoryStreamSelector {
 
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][isAddressBookNamePresent] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return false;
 	}
@@ -240,6 +279,10 @@ public class JDBCImpl extends FactoryStreamSelector {
 
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][getListAddressBook] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return null;
 	}
@@ -261,6 +304,10 @@ public class JDBCImpl extends FactoryStreamSelector {
 			return true;
 		} catch (Exception e) {
 			System.err.println("Exception occured [JDBCImpl][deleteAddressBook] : " + e.getMessage());
+		} finally {
+
+			Utility.closeResources(connection);
+
 		}
 		return false;
 	}
@@ -276,7 +323,6 @@ public class JDBCImpl extends FactoryStreamSelector {
 		} catch (SQLException e) {
 			System.err.println("Exception occured [Connection][static] : " + e.getMessage());
 		}
-
 		return connection;
 	}
 

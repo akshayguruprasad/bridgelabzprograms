@@ -4,5 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="/home/bridgeit/jars/jars/jackson-all-1.9.0.jar"/>
 	<classpathentry kind="lib" path="/home/bridgeit/jars/jars/mysql-connector-java-8.0.11.jar"/>
+	<classpathentry kind="lib" path="/home/bridgeit/jars/jars/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="/home/bridgeit/Desktop/Implementation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

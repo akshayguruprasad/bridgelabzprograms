@@ -2,6 +2,11 @@ package com.application.addressbook.db.entity;
 
 public class AddressBookEntity {
 
+	@Override
+	public String toString() {
+		return "AddressBookEntity [id=" + id + ", addressBookName=" + addressBookName + ", isDeleted=" + isDeleted
+				+ "]";
+	}
 	int id;
 	String addressBookName;
 	boolean isDeleted;

@@ -54,7 +54,8 @@ public class DaoContactImpl implements DaoContact {
 		try {
 			ps = connection.prepareStatement(UPDATE_CONTACT_BY_ID);
 
-			ps.setInt(1, id);
+			ps.setString(1, contact.getMobileNumber());
+			ps.setInt(2, id);
 
 			isUpdated = ps.executeUpdate();
 
@@ -68,8 +69,6 @@ public class DaoContactImpl implements DaoContact {
 		return isUpdated;
 
 	}
-
-
 
 	@Override
 	public List<PersonEntity> selectAllContacts(Connection connection, List<Integer> validIds) {
