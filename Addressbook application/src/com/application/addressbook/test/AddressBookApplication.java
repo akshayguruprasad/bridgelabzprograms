@@ -1,9 +1,33 @@
 package com.application.addressbook.test;
 
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.application.addressbook.dependencyinjector.abstractimpl.JDBCImpl;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.management.ClassLoadingMXBean;
+import java.lang.reflect.Field;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import org.codehaus.jackson.map.ser.std.StdJdkSerializers.ClassSerializer;
+
+import com.application.addressbook.annotations.ServiceImpl;
+import com.application.addressbook.annotations.Wired;
+
 import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.interfaces.ManagerInterface;
 import com.application.addressbook.interfaces.VariableHolder;
@@ -27,12 +51,56 @@ public class AddressBookApplication implements VariableHolder {
 	 */
 	static ManagerInterface manager;
 
+
+
+	static {
+
+		try {
+
+			Map<String, Class<?>> mapper = new HashMap<String, Class<?>>();
+
+			for (Class<?> clazz : AddressBookApplication.findClasses(
+
+					"com.application.addressbook.dependencyinjector.abstractimpl")) {
+
+				ServiceImpl[] value = clazz.getAnnotationsByType(ServiceImpl.class);
+
+				mapper.put(value[0].implementedValue(), clazz);
+
+				String operationValue = null;
+
+				Field field = BookManager.class.getField("factory");
+				Wired primaryAnnotation = field.getAnnotation(Wired.class);
+
+				operationValue = primaryAnnotation.value();
+
+				for (int i = 0; i < value.length; i++) {
+
+					if (value[i].implementedValue().equalsIgnoreCase(operationValue)) {
+
+						if (manager == null) {
+							manager = new BookManager();
+						}
+						Class<?> x1 = mapper.get(value[i].implementedValue());
+
+						field.set(manager, x1.newInstance());
+
+					}
+
+				}
+
+			}
+		} catch (Exception e) {
+
+			String data = e.getMessage();
+			System.out.println(data);
+			e.printStackTrace();
+		}
+
+	}
+
 	public static void main(String... args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		if (manager == null) {
-			manager = new BookManager();
-			manager.setFactory(new JDBCImpl());
-		}
 		System.out.println("---------------------------------------");
 		System.out.println("  WELCOME PAGE   ");
 		System.out.println("---------------------------------------");
@@ -57,6 +125,37 @@ public class AddressBookApplication implements VariableHolder {
 			break;
 		}
 	}
+
+
+	private static List<Class<?>> findClasses(String string) {
+		List<Class<?>> allClasses = null;
+		try {
+
+			allClasses = new ArrayList<Class<?>>();
+			ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+			String path = string.replace(".", "/");
+			URL x = loader.getResource(path);
+
+			try {
+				File file = new File(x.toURI());
+
+				for (File f : file.listFiles()) {
+
+					Class<?> classObject = Class.forName(string+"."+f.getName().substring(0, f.getName().length() - 6));
+					allClasses.add(classObject);
+				}
+			} catch (URISyntaxException e) {
+				throw new Exception(e);
+			} catch (ClassNotFoundException e) {
+				throw new Exception(e);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return allClasses;
+	}
+
 
 	/**
 	 * @param worker
@@ -190,5 +289,6 @@ public class AddressBookApplication implements VariableHolder {
 		}
 
 	}
+
 
 }

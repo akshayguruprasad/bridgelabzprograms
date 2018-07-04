@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled source #
 ###################
 *.com
@@ -48,5 +49,7 @@ Servers/
 Servers/
 
 
+=======
+>>>>>>> 17d2e4d2a30440a97f92d8acf4ef70efe554bead
 /.metadata/
 /.recommenders/

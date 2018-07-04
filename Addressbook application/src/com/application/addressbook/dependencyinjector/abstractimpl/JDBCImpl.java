@@ -1,11 +1,14 @@
 package com.application.addressbook.dependencyinjector.abstractimpl;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.application.addressbook.annotations.ServiceImpl;
 
 import com.application.addressbook.dao.DaoAddress;
 import com.application.addressbook.dao.DaoAddressBook;
@@ -23,6 +26,8 @@ import com.application.addressbook.entities.Address;
 import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.entities.Person;
 import com.application.addressbook.util.Utility;
+
+@ServiceImpl(implementedValue="jdbc")
 
 public class JDBCImpl extends FactoryStreamSelector {
 	private String DBURL = "jdbc:mysql://localhost:3306/addressbook?useSSL=false";

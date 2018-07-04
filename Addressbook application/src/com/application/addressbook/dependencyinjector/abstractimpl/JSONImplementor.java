@@ -1,5 +1,6 @@
 package com.application.addressbook.dependencyinjector.abstractimpl;
 
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
@@ -8,11 +9,16 @@ import java.util.stream.Collectors;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.application.addressbook.annotations.ServiceImpl;
+
 import com.application.addressbook.dependencyinjector.abstractclass.FactoryStreamSelector;
 import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.interfaces.VariableHolder;
 import com.application.addressbook.io.AddressBookIO;
 import com.application.addressbook.util.Utility;
+
+
+@ServiceImpl(implementedValue="json")
 
 public class JSONImplementor extends FactoryStreamSelector implements VariableHolder {
 

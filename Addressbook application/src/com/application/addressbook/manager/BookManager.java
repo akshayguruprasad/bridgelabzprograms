@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
+import com.application.addressbook.annotations.Wired;
 import com.application.addressbook.dependencyinjector.abstractclass.FactoryStreamSelector;
 import com.application.addressbook.entities.AddressBook;
 import com.application.addressbook.interfaces.ManagerInterface;
@@ -19,7 +20,11 @@ import com.application.addressbook.util.Utility;
 public class BookManager implements VariableHolder, ManagerInterface {
 
 	static AddressBook book;
-	static FactoryStreamSelector factory;
+
+	
+	@Wired(value="jdbc")
+	public static FactoryStreamSelector factory;
+
 
 	@Override
 	public String toString() {
